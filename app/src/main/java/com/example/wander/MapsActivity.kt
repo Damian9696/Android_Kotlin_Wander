@@ -12,6 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -71,5 +72,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val homeLatLong = LatLng(latitude, longitude)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLong, zoomLevel))
         map.addMarker(MarkerOptions().position(homeLatLong))
+
+        setMapLongClick(map)
+    }
+
+    private fun setMapLongClick(map: GoogleMap) {
+        map.setOnMapLongClickListener { notNullLatLong ->
+
+            val snippet = String.format(
+                Locale.getDefault(),
+                getString(R.string.lat_long_snippet),
+                notNullLatLong.latitude,
+                notNullLatLong.longitude
+            )
+
+            map.addMarker(
+                MarkerOptions()
+                    .position(notNullLatLong)
+                    .title(getString(R.string.dropped_pin))
+                    .snippet(snippet)
+            )
+        }
     }
 }
