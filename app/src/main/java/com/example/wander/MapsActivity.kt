@@ -68,15 +68,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val latitude = 37.422372
         val longitude = -122.084111
-        val zoomLevel = 15f
+        val zoomLevel = 18f
+        val androidOverlaySize = 100f
 
         val homeLatLong = LatLng(latitude, longitude)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLong, zoomLevel))
         map.addMarker(MarkerOptions().position(homeLatLong))
 
+
+        setAndroidOverlay(homeLatLong, androidOverlaySize)
         setMapLongClick(map)
         setPoiClick(map)
         setMapStyle(map)
+    }
+
+    private fun setAndroidOverlay(position: LatLng, size: Float) {
+        val androidOverlay = GroundOverlayOptions()
+            .image(BitmapDescriptorFactory.fromResource(R.drawable.android))
+            .position(position, size)
+        map.addGroundOverlay(androidOverlay)
     }
 
     private fun setMapLongClick(map: GoogleMap) {
